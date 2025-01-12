@@ -72,7 +72,7 @@ public class Branch {
 
 	private final LinkRendering labelPositive;
 
-	private LinkRendering inlinkRendering = LinkRendering.none();
+	private LinkRendering inLinkRendering = LinkRendering.none();
 	private final LinkRendering inlabel;
 	private LinkRendering special;
 
@@ -126,12 +126,12 @@ public class Branch {
 		return list.addNote(note, position, type, colors, swimlaneNote, stereotype);
 	}
 
-	public final void setInlinkRendering(LinkRendering inlinkRendering) {
-		this.inlinkRendering = Objects.requireNonNull(inlinkRendering);
+	public final void setInLinkRendering(LinkRendering inLinkRendering) {
+		this.inLinkRendering = Objects.requireNonNull(inLinkRendering);
 	}
 
 	public void updateFtile(FtileFactory factory) {
-		this.ftile = factory.decorateOut(list.createFtile(factory), inlinkRendering);
+		this.ftile = factory.decorateOut(list.createFtile(factory), inLinkRendering);
 	}
 
 	// ::comment when __CORE__
@@ -155,10 +155,10 @@ public class Branch {
 //		if (labelPositive.getRainbow().size() > 0)
 //			return labelPositive.getRainbow();
 
-		if (inlinkRendering == null)
+		if (inLinkRendering == null)
 			return null;
 
-		return inlinkRendering.getRainbow();
+		return inLinkRendering.getRainbow();
 	}
 
 	public Rainbow getInColor(Rainbow arrowColor) {

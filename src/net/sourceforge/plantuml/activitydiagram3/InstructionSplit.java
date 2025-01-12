@@ -60,16 +60,16 @@ public class InstructionSplit extends AbstractInstruction implements Instruction
 
 	private final List<InstructionList> splits = new ArrayList<>();
 	private final Instruction parent;
-	private final LinkRendering inlinkRendering;
+	private final LinkRendering inLinkRendering;
 	private final Swimlane swimlaneIn;
 	private Swimlane swimlaneOut;
 
-	public InstructionSplit(Instruction parent, LinkRendering inlinkRendering, Swimlane swimlane) {
+	public InstructionSplit(Instruction parent, LinkRendering inLinkRendering, Swimlane swimlane) {
 		this.parent = parent;
 		this.swimlaneIn = swimlane;
 
 		this.splits.add(new InstructionList(swimlane));
-		this.inlinkRendering = Objects.requireNonNull(inlinkRendering);
+		this.inLinkRendering = Objects.requireNonNull(inLinkRendering);
 	}
 
 	@Override
@@ -124,17 +124,17 @@ public class InstructionSplit extends AbstractInstruction implements Instruction
 		return parent;
 	}
 
-	public void splitAgain(LinkRendering inlinkRendering) {
-		if (inlinkRendering != null)
-			getLast().setOutRendering(inlinkRendering);
+	public void splitAgain(LinkRendering inLinkRendering) {
+		if (inLinkRendering != null)
+			getLast().setOutRendering(inLinkRendering);
 
 		final InstructionList list = new InstructionList(swimlaneIn);
 		this.splits.add(list);
 	}
 
-	public void endSplit(LinkRendering inlinkRendering, Swimlane endSwimlane) {
-		if (inlinkRendering != null)
-			getLast().setOutRendering(inlinkRendering);
+	public void endSplit(LinkRendering inLinkRendering, Swimlane endSwimlane) {
+		if (inLinkRendering != null)
+			getLast().setOutRendering(inLinkRendering);
 
 		this.swimlaneOut = endSwimlane;
 
@@ -147,7 +147,7 @@ public class InstructionSplit extends AbstractInstruction implements Instruction
 
 	@Override
 	public LinkRendering getInLinkRendering() {
-		return inlinkRendering;
+		return inLinkRendering;
 	}
 
 	@Override

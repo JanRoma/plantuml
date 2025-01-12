@@ -54,7 +54,7 @@ import net.sourceforge.plantuml.style.ISkinParam;
 public class InstructionSpot extends MonoSwimable implements Instruction {
 
 	private boolean killed = false;
-	private final LinkRendering inlinkRendering;
+	private final LinkRendering inLinkRendering;
 	private final String spot;
 	private final HColor color;
 
@@ -63,10 +63,10 @@ public class InstructionSpot extends MonoSwimable implements Instruction {
 		return false;
 	}
 
-	public InstructionSpot(String spot, HColor color, LinkRendering inlinkRendering, Swimlane swimlane) {
+	public InstructionSpot(String spot, HColor color, LinkRendering inLinkRendering, Swimlane swimlane) {
 		super(swimlane);
 		this.spot = spot;
-		this.inlinkRendering = Objects.requireNonNull(inlinkRendering);
+		this.inLinkRendering = Objects.requireNonNull(inLinkRendering);
 		this.color = color;
 	}
 
@@ -102,7 +102,7 @@ public class InstructionSpot extends MonoSwimable implements Instruction {
 
 	@Override
 	public LinkRendering getInLinkRendering() {
-		return inlinkRendering;
+		return inLinkRendering;
 	}
 
 }

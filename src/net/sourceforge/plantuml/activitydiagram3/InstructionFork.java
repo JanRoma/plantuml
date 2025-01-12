@@ -63,7 +63,7 @@ public class InstructionFork extends WithNote implements Instruction {
 
 	private final List<InstructionList> forks = new ArrayList<>();
 	private final Instruction parent;
-	private final LinkRendering inlinkRendering;
+	private final LinkRendering inLinkRendering;
 	private final ISkinParam skinParam;
 	private final Swimlane swimlaneIn;
 	private Swimlane swimlaneOut;
@@ -80,9 +80,9 @@ public class InstructionFork extends WithNote implements Instruction {
 		return false;
 	}
 
-	public InstructionFork(Instruction parent, LinkRendering inlinkRendering, ISkinParam skinParam, Swimlane swimlane) {
+	public InstructionFork(Instruction parent, LinkRendering inLinkRendering, ISkinParam skinParam, Swimlane swimlane) {
 		this.parent = parent;
-		this.inlinkRendering = Objects.requireNonNull(inlinkRendering);
+		this.inLinkRendering = Objects.requireNonNull(inLinkRendering);
 		this.skinParam = skinParam;
 		this.swimlaneIn = swimlane;
 		this.swimlaneOut = swimlane;
@@ -148,7 +148,7 @@ public class InstructionFork extends WithNote implements Instruction {
 
 	@Override
 	public LinkRendering getInLinkRendering() {
-		return inlinkRendering;
+		return inLinkRendering;
 	}
 
 	@Override

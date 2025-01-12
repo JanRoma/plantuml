@@ -67,7 +67,7 @@ public class InstructionSwitch extends WithNote implements Instruction, Instruct
 	private final Instruction parent;
 
 	private Branch current;
-	private final LinkRendering topInlinkRendering;
+	private final LinkRendering topInLinkRendering;
 	private LinkRendering afterEndwhile = LinkRendering.none();
 	private final Display labelTest;
 
@@ -82,9 +82,9 @@ public class InstructionSwitch extends WithNote implements Instruction, Instruct
 		return false;
 	}
 
-	public InstructionSwitch(Swimlane swimlane, Instruction parent, Display labelTest, LinkRendering inlinkRendering,
+	public InstructionSwitch(Swimlane swimlane, Instruction parent, Display labelTest, LinkRendering inLinkRendering,
 			HColor color, ISkinParam skinParam) {
-		this.topInlinkRendering = Objects.requireNonNull(inlinkRendering);
+		this.topInLinkRendering = Objects.requireNonNull(inLinkRendering);
 		this.parent = parent;
 		this.skinParam = skinParam;
 		this.labelTest = labelTest;
@@ -120,7 +120,7 @@ public class InstructionSwitch extends WithNote implements Instruction, Instruct
 		for (Branch branch : switches)
 			branch.updateFtile(factory);
 
-		Ftile result = factory.createSwitch(swimlane, switches, afterEndwhile, topInlinkRendering, labelTest);
+		Ftile result = factory.createSwitch(swimlane, switches, afterEndwhile, topInLinkRendering, labelTest);
 		result = eventuallyAddNote(factory, result, getSwimlaneIn(), VerticalAlignment.TOP);
 		return result;
 	}
@@ -132,7 +132,7 @@ public class InstructionSwitch extends WithNote implements Instruction, Instruct
 
 	@Override
 	public LinkRendering getInLinkRendering() {
-		return topInlinkRendering;
+		return topInLinkRendering;
 	}
 
 	@Override

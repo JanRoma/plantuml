@@ -93,12 +93,12 @@ public class InstructionIf extends WithNote implements Instruction, InstructionC
 	}
 
 	public InstructionIf(Swimlane swimlane, Instruction parent, Display labelTest, LinkRendering whenThen,
-			LinkRendering inlinkRendering, HColor color, ISkinParam skinParam, Url url, Stereotype stereotype) {
+			LinkRendering inLinkRendering, HColor color, ISkinParam skinParam, Url url, Stereotype stereotype) {
 		this.url = url;
 		this.stereotype = stereotype;
 		this.parent = parent;
 		this.skinParam = skinParam;
-		this.topInlinkRendering = Objects.requireNonNull(inlinkRendering);
+		this.topInlinkRendering = Objects.requireNonNull(inLinkRendering);
 		this.swimlane = swimlane;
 		this.currentStyleBuilder = skinParam.getCurrentStyleBuilder();
 		this.thens.add(new Branch(currentStyleBuilder, swimlane, whenThen, labelTest, color, LinkRendering.none(),
@@ -171,7 +171,7 @@ public class InstructionIf extends WithNote implements Instruction, InstructionC
 		if (elseBranch != null)
 			return false;
 
-		this.current.setInlinkRendering(nextLinkRenderer);
+		this.current.setInLinkRendering(nextLinkRenderer);
 		this.elseBranch = new Branch(skinParam.getCurrentStyleBuilder(), swimlane, whenElse, Display.NULL, null,
 				LinkRendering.none(), stereotype);
 		this.current = elseBranch;
@@ -198,7 +198,7 @@ public class InstructionIf extends WithNote implements Instruction, InstructionC
 					Display.NULL, null, LinkRendering.none(), stereotype);
 
 		this.elseBranch.setSpecial(nextLinkRenderer);
-		this.current.setInlinkRendering(nextLinkRenderer);
+		this.current.setInLinkRendering(nextLinkRenderer);
 	}
 
 	@Override

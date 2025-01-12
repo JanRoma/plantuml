@@ -49,11 +49,11 @@ import net.sourceforge.plantuml.style.ISkinParam;
 
 public class InstructionBreak extends MonoSwimable implements Instruction {
 
-	private final LinkRendering inlinkRendering;
+	private final LinkRendering inLinkRendering;
 
-	public InstructionBreak(Swimlane swimlane, LinkRendering inlinkRendering) {
+	public InstructionBreak(Swimlane swimlane, LinkRendering inLinkRendering) {
 		super(swimlane);
-		this.inlinkRendering = Objects.requireNonNull(inlinkRendering);
+		this.inLinkRendering = Objects.requireNonNull(inLinkRendering);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class InstructionBreak extends MonoSwimable implements Instruction {
 	}
 
 	public LinkRendering getInLinkRendering() {
-		return inlinkRendering;
+		return inLinkRendering;
 	}
 
 	public boolean containsBreak() {

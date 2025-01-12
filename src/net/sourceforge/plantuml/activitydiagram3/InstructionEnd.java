@@ -50,11 +50,11 @@ import net.sourceforge.plantuml.style.ISkinParam;
 
 public class InstructionEnd extends MonoSwimable implements Instruction {
 
-	private final LinkRendering inlinkRendering;
+	private final LinkRendering inLinkRendering;
 
-	public InstructionEnd(Swimlane swimlane, LinkRendering inlinkRendering) {
+	public InstructionEnd(Swimlane swimlane, LinkRendering inLinkRendering) {
 		super(swimlane);
-		this.inlinkRendering = Objects.requireNonNull(inlinkRendering);
+		this.inLinkRendering = Objects.requireNonNull(inLinkRendering);
 	}
 
 	// ::comment when __CORE__
@@ -83,7 +83,7 @@ public class InstructionEnd extends MonoSwimable implements Instruction {
 
 	@Override
 	public LinkRendering getInLinkRendering() {
-		return inlinkRendering;
+		return inLinkRendering;
 	}
 
 	@Override

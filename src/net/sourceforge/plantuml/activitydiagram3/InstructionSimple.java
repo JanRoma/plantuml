@@ -61,7 +61,7 @@ public class InstructionSimple extends MonoSwimable implements Instruction {
 	private boolean killed = false;
 	private final Display label;
 	private final Colors colors;
-	private final LinkRendering inlinkRendering;
+	private final LinkRendering inLinkRendering;
 	private final BoxStyle boxStyle;
 	private final Url url;
 	private final Stereotype stereotype;
@@ -71,14 +71,14 @@ public class InstructionSimple extends MonoSwimable implements Instruction {
 		return false;
 	}
 
-	public InstructionSimple(Display label, LinkRendering inlinkRendering, Swimlane swimlane, BoxStyle boxStyle,
+	public InstructionSimple(Display label, LinkRendering inLinkRendering, Swimlane swimlane, BoxStyle boxStyle,
 			Url url, Colors colors, Stereotype stereotype) {
 		super(swimlane);
 		this.stereotype = stereotype;
 		this.url = url;
 		this.boxStyle = boxStyle;
 		this.label = label;
-		this.inlinkRendering = Objects.requireNonNull(inlinkRendering);
+		this.inLinkRendering = Objects.requireNonNull(inLinkRendering);
 		this.colors = Objects.requireNonNull(colors);
 	}
 
@@ -127,7 +127,7 @@ public class InstructionSimple extends MonoSwimable implements Instruction {
 
 	@Override
 	public LinkRendering getInLinkRendering() {
-		return inlinkRendering;
+		return inLinkRendering;
 	}
 
 }
