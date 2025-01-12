@@ -73,7 +73,7 @@ public class InstructionIf extends WithNote implements Instruction, InstructionC
 	private final Instruction parent;
 
 	private Branch current;
-	private final LinkRendering topInlinkRendering;
+	private final LinkRendering topInLinkRendering;
 	private LinkRendering outColor = LinkRendering.none();
 	private final Stereotype stereotype;
 
@@ -98,7 +98,7 @@ public class InstructionIf extends WithNote implements Instruction, InstructionC
 		this.stereotype = stereotype;
 		this.parent = parent;
 		this.skinParam = skinParam;
-		this.topInlinkRendering = Objects.requireNonNull(inLinkRendering);
+		this.topInLinkRendering = Objects.requireNonNull(inLinkRendering);
 		this.swimlane = swimlane;
 		this.currentStyleBuilder = skinParam.getCurrentStyleBuilder();
 		this.thens.add(new Branch(currentStyleBuilder, swimlane, whenThen, labelTest, color, LinkRendering.none(),
@@ -145,7 +145,7 @@ public class InstructionIf extends WithNote implements Instruction, InstructionC
 					Display.NULL, null, LinkRendering.none(), stereotype);
 
 		elseBranch.updateFtile(factory);
-		Ftile result = factory.createIf(swimlane, thens, elseBranch, outColor, topInlinkRendering, url,
+		Ftile result = factory.createIf(swimlane, thens, elseBranch, outColor, topInLinkRendering, url,
 				getPositionedNotes(), stereotype, currentStyleBuilder);
 //		if (getPositionedNotes().size() > 0)
 //			result = FtileWithNoteOpale.create(result, getPositionedNotes(), false, VerticalAlignment.CENTER);
@@ -219,7 +219,7 @@ public class InstructionIf extends WithNote implements Instruction, InstructionC
 
 	@Override
 	public LinkRendering getInLinkRendering() {
-		return topInlinkRendering;
+		return topInLinkRendering;
 	}
 
 	@Override

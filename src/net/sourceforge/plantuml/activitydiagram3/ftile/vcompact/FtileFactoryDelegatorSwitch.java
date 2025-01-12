@@ -73,7 +73,7 @@ public class FtileFactoryDelegatorSwitch extends FtileFactoryDelegator {
 
 	@Override
 	public Ftile createSwitch(Swimlane swimlane, List<Branch> branches, LinkRendering afterEndwhile,
-			LinkRendering topInlinkRendering, Display labelTest) {
+			LinkRendering topInLinkRendering, Display labelTest) {
 		// return createNude(swimlane, branches);
 		// return createWithDiamonds(swimlane, branches, labelTest);
 		return createWithLinks(swimlane, branches, labelTest);

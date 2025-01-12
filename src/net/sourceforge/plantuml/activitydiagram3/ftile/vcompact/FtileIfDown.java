@@ -302,11 +302,11 @@ public class FtileIfDown extends AbstractFtile {
 	}
 
 	class ConnectionElse1 extends AbstractConnection {
-		private final Rainbow endInlinkColor;
+		private final Rainbow endInLinkColor;
 
-		public ConnectionElse1(Rainbow endInlinkColor) {
+		public ConnectionElse1(Rainbow endInLinkColor) {
 			super(diamond1, diamond2);
-			this.endInlinkColor = endInlinkColor;
+			this.endInLinkColor = endInLinkColor;
 		}
 
 		protected XPoint2D getP1(StringBounder stringBounder) {
@@ -340,7 +340,7 @@ public class FtileIfDown extends AbstractFtile {
 			final double t11 = getTranslateForThen(stringBounder).getDx();
 			final double xmin = Math.min(x1 - Hexagon.hexagonHalfSize, getTranslateForThen(stringBounder).getDx());
 
-			final Snake snake = Snake.create(skinParam(), endInlinkColor, skinParam().arrows().asToRight())
+			final Snake snake = Snake.create(skinParam(), endInLinkColor, skinParam().arrows().asToRight())
 					.emphasizeDirection(Direction.DOWN);
 			snake.addPoint(x1, y1);
 			snake.addPoint(xmin, y1);
@@ -354,11 +354,11 @@ public class FtileIfDown extends AbstractFtile {
 	}
 
 	class ConnectionElse2 extends AbstractConnection {
-		private final Rainbow endInlinkColor;
+		private final Rainbow endInLinkColor;
 
-		public ConnectionElse2(Rainbow endInlinkColor) {
+		public ConnectionElse2(Rainbow endInLinkColor) {
 			super(diamond1, diamond2);
-			this.endInlinkColor = endInlinkColor;
+			this.endInLinkColor = endInLinkColor;
 		}
 
 		protected XPoint2D getP1(StringBounder stringBounder) {
@@ -393,7 +393,7 @@ public class FtileIfDown extends AbstractFtile {
 			final double xmax = Math.max(x1 + Hexagon.hexagonHalfSize,
 					getTranslateForThen(stringBounder).getDx() + thenGeom.getWidth());
 
-			final Snake snake = Snake.create(skinParam(), endInlinkColor, skinParam().arrows().asToLeft())
+			final Snake snake = Snake.create(skinParam(), endInLinkColor, skinParam().arrows().asToLeft())
 					.emphasizeDirection(Direction.DOWN);
 			snake.addPoint(x1, y1);
 			snake.addPoint(xmax, y1);
@@ -407,11 +407,11 @@ public class FtileIfDown extends AbstractFtile {
 	}
 
 	class ConnectionElseHline extends ConnectionElse2 {
-		private final Rainbow endInlinkColor;
+		private final Rainbow endInLinkColor;
 
-		public ConnectionElseHline(Rainbow endInlinkColor) {
-			super(endInlinkColor);
-			this.endInlinkColor = endInlinkColor;
+		public ConnectionElseHline(Rainbow endInLinkColor) {
+			super(endInLinkColor);
+			this.endInLinkColor = endInLinkColor;
 		}
 
 		@Override
@@ -433,7 +433,7 @@ public class FtileIfDown extends AbstractFtile {
 			final double xmax = Math.max(x1 + Hexagon.hexagonHalfSize,
 					getTranslateForThen(stringBounder).getDx() + thenGeom.getWidth());
 
-			final Snake snake = Snake.create(skinParam(), endInlinkColor, skinParam().arrows().asToDown());
+			final Snake snake = Snake.create(skinParam(), endInLinkColor, skinParam().arrows().asToDown());
 			snake.addPoint(x1, y1);
 			snake.addPoint(xmax, y1);
 			snake.addPoint(xmax, y2);
@@ -446,8 +446,8 @@ public class FtileIfDown extends AbstractFtile {
 
 	class ConnectionElseNoDiamond extends ConnectionElse2 {
 
-		public ConnectionElseNoDiamond(Rainbow endInlinkColor) {
-			super(endInlinkColor);
+		public ConnectionElseNoDiamond(Rainbow endInLinkColor) {
+			super(endInLinkColor);
 		}
 
 		@Override
@@ -459,11 +459,11 @@ public class FtileIfDown extends AbstractFtile {
 
 	// copied from FtileIfLongHorizontal to use with ConditionEndStyle.HLINE
 	class ConnectionHline extends AbstractConnection {
-		private final Rainbow endInlinkColor;
+		private final Rainbow endInLinkColor;
 
-		public ConnectionHline(Rainbow endInlinkColor) {
+		public ConnectionHline(Rainbow endInLinkColor) {
 			super(diamond1, diamond2);
-			this.endInlinkColor = endInlinkColor;
+			this.endInLinkColor = endInLinkColor;
 		}
 
 		private XPoint2D getP1(StringBounder stringBounder) {
@@ -509,7 +509,7 @@ public class FtileIfDown extends AbstractFtile {
 			final double xmax = Math.max(x1 + Hexagon.hexagonHalfSize,
 					getTranslateForThen(stringBounder).getDx() + thenGeom.getWidth());
 
-			final Snake snake = Snake.create(skinParam(), endInlinkColor).withMerge(MergeStrategy.NONE);
+			final Snake snake = Snake.create(skinParam(), endInLinkColor).withMerge(MergeStrategy.NONE);
 			snake.addPoint(xmax, y2);
 			// ug.apply(new UTranslate(xmax, y2 - Diamond.diamondHalfSize)).draw(new
 			// UEmpty(5,

@@ -190,16 +190,16 @@ public class FtileFactoryDelegator implements FtileFactory {
 
 	@Override
 	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch, LinkRendering afterEndwhile,
-			LinkRendering topInlinkRendering, Url url, Collection<PositionedNote> notes, Stereotype stereotype,
+			LinkRendering topInLinkRendering, Url url, Collection<PositionedNote> notes, Stereotype stereotype,
 			StyleBuilder currentStyleBuilder) {
-		return factory.createIf(swimlane, thens, elseBranch, afterEndwhile, topInlinkRendering, url, notes, stereotype,
+		return factory.createIf(swimlane, thens, elseBranch, afterEndwhile, topInLinkRendering, url, notes, stereotype,
 				currentStyleBuilder);
 	}
 
 	@Override
 	public Ftile createSwitch(Swimlane swimlane, List<Branch> branches, LinkRendering afterEndwhile,
-			LinkRendering topInlinkRendering, Display labelTest) {
-		return factory.createSwitch(swimlane, branches, afterEndwhile, topInlinkRendering, labelTest);
+			LinkRendering topInLinkRendering, Display labelTest) {
+		return factory.createSwitch(swimlane, branches, afterEndwhile, topInLinkRendering, labelTest);
 	}
 
 	@Override

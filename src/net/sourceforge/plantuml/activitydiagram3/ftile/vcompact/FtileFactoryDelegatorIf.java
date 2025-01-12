@@ -67,7 +67,7 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 
 	@Override
 	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch, LinkRendering afterEndwhile,
-			LinkRendering topInlinkRendering, Url url, Collection<PositionedNote> notes, Stereotype stereotype,
+			LinkRendering topInLinkRendering, Url url, Collection<PositionedNote> notes, Stereotype stereotype,
 			StyleBuilder currentStyleBuilder) {
 
 		final ConditionStyle conditionStyle = skinParam().getConditionStyle();
@@ -84,9 +84,9 @@ public class FtileFactoryDelegatorIf extends FtileFactoryDelegator {
 		if (thens.size() > 1) {
 			if (pragma.useVerticalIf()/* OptionFlags.USE_IF_VERTICAL */)
 				return FtileIfLongVertical.create(swimlane, backColor, getFactory(), conditionStyle, thens, elseBranch,
-						topInlinkRendering, afterEndwhile, styleArrow, styleDiamond);
+						topInLinkRendering, afterEndwhile, styleArrow, styleDiamond);
 			return FtileIfLongHorizontal.create(swimlane, backColor, getFactory(), conditionStyle, thens, elseBranch,
-					topInlinkRendering, afterEndwhile, styleArrow, styleDiamond);
+					topInLinkRendering, afterEndwhile, styleArrow, styleDiamond);
 		}
 		return ConditionalBuilder.create(swimlane, backColor, getFactory(), conditionStyle, conditionEndStyle,
 				thens.get(0), elseBranch, skinParam(), getStringBounder(), url, styleArrow, styleDiamond, notes);

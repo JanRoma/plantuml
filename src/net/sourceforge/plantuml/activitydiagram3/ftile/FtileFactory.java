@@ -91,11 +91,11 @@ public interface FtileFactory {
 			StyleBuilder currentStyleBuilder);
 
 	public Ftile createIf(Swimlane swimlane, List<Branch> thens, Branch elseBranch, LinkRendering outColor,
-			LinkRendering topInlinkRendering, Url url, Collection<PositionedNote> notes, Stereotype stereotype,
+			LinkRendering topInLinkRendering, Url url, Collection<PositionedNote> notes, Stereotype stereotype,
 			StyleBuilder currentStyleBuilder);
 
 	public Ftile createSwitch(Swimlane swimlane, List<Branch> branches, LinkRendering afterEndwhile,
-			LinkRendering topInlinkRendering, Display labelTest);
+			LinkRendering topInLinkRendering, Display labelTest);
 
 	public Ftile createParallel(List<Ftile> all, ForkStyle style, String label, Swimlane in, Swimlane out);
 
