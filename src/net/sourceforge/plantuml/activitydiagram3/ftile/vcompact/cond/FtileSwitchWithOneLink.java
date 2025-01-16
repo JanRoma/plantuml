@@ -88,6 +88,10 @@ public class FtileSwitchWithOneLink extends FtileSwitchWithDiamonds {
 		}
 
 		private XPoint2D getP1(StringBounder stringBounder) {
+			if (diamond1 == null) {
+				return getTranslateOf(getFtile2(), stringBounder)
+						.getTranslated(getFtile2().calculateDimension(stringBounder).getPointIn());
+			}
 			final FtileGeometry dimDiamond1 = diamond1.calculateDimension(stringBounder);
 			return getTranslateDiamond1(stringBounder).getTranslated(dimDiamond1.getPointC());
 		}
@@ -136,7 +140,7 @@ public class FtileSwitchWithOneLink extends FtileSwitchWithDiamonds {
 		final Ftile single = tiles.get(0);
 		conns.add(new ConnectionVerticalTop(single, branches.get(0)));
 
-		if (single.calculateDimension(stringBounder).hasPointOut())
+		if (single.calculateDimension(stringBounder).hasPointOut() && diamond2 != null)
 			conns.add(new ConnectionVerticalBottom(single));
 
 		return FtileUtils.addConnection(this, conns);

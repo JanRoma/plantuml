@@ -74,9 +74,18 @@ public class FtileFactoryDelegatorSwitch extends FtileFactoryDelegator {
 	@Override
 	public Ftile createSwitch(Swimlane swimlane, List<Branch> branches, LinkRendering afterEndwhile,
 			LinkRendering topInlinkRendering, Display labelTest) {
-		// return createNude(swimlane, branches);
-		// return createWithDiamonds(swimlane, branches, labelTest);
+		if (branches.size() == 1) {
+			return createSingleArrow(swimlane, branches.get(0));
+		}
 		return createWithLinks(swimlane, branches, labelTest);
+	}
+
+	private Ftile createSingleArrow(Swimlane swimlane, Branch branch) {
+		final List<Ftile> ftiles = new ArrayList<>();
+		final List<Branch> branches = new ArrayList<>();
+		branches.add(branch);
+		ftiles.add(new FtileMinWidthCentered(branch.getFtile(), 30));
+		return new FtileSwitchWithOneLink(ftiles, branches, swimlane, null, null, getStringBounder(), null);
 	}
 
 	private Ftile createNude(Swimlane swimlane, List<Branch> branches) {

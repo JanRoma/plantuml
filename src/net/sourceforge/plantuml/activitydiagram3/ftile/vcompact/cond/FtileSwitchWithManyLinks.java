@@ -325,17 +325,16 @@ public class FtileSwitchWithManyLinks extends FtileSwitchWithDiamonds {
 	private void addOutgoingArrows(StringBounder stringBounder, final List<Connection> conns) {
 		final int firstOutgoingArrow = getFirstOutgoingArrow(stringBounder);
 		final int lastOutgoingArrow = getLastOutgoingArrow(stringBounder);
-		if (firstOutgoingArrow < tiles.size())
+		if (firstOutgoingArrow < tiles.size() && branches.get(firstOutgoingArrow).getFtile().calculateDimension(stringBounder).hasPointOut())
 			conns.add(new ConnectionVerticalThenHorizontal(tiles.get(firstOutgoingArrow),
 					branches.get(firstOutgoingArrow).getTextBlockSpecial()));
-		if (lastOutgoingArrow > 0)
+		if (lastOutgoingArrow > 0 && branches.get(lastOutgoingArrow).getFtile().calculateDimension(stringBounder).hasPointOut())
 			conns.add(new ConnectionVerticalThenHorizontal(tiles.get(lastOutgoingArrow),
 					branches.get(lastOutgoingArrow).getTextBlockSpecial()));
 		for (int i = firstOutgoingArrow + 1; i < lastOutgoingArrow; i++) {
 			final Ftile tile = tiles.get(i);
 			if (tile.calculateDimension(stringBounder).hasPointOut())
 				conns.add(new ConnectionVerticalBottom(tile, branches.get(i).getTextBlockSpecial()));
-
 		}
 	}
 

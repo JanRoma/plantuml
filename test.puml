@@ -1,0 +1,24 @@
+@startuml
+
+start
+:activity1;
+:activity2;
+
+switch (choose proper way)
+    case (way1)
+        :activity3;
+        detach
+    case (way2)
+        :activity4;
+        end
+    case (way3)
+        :activity5;
+        stop
+    case (way4)
+        :activity6;
+endswitch
+
+:activity7;
+
+stop
+@enduml
