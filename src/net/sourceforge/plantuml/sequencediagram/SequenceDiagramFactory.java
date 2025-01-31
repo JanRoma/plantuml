@@ -5,12 +5,12 @@
  * (C) Copyright 2009-2024, Arnaud Roques
  *
  * Project Info:  https://plantuml.com
- * 
+ *
  * If you like this project or if you find it useful, you can support us at:
- * 
+ *
  * https://plantuml.com/patreon (only 1$ per month!)
  * https://plantuml.com/paypal
- * 
+ *
  * This file is part of PlantUML.
  *
  * PlantUML is free software; you can redistribute it and/or modify it
@@ -30,7 +30,7 @@
  *
  *
  * Original Author:  Arnaud Roques
- * 
+ *
  *
  */
 package net.sourceforge.plantuml.sequencediagram;
@@ -54,6 +54,7 @@ import net.sourceforge.plantuml.sequencediagram.command.CommandAutoNewpage;
 import net.sourceforge.plantuml.sequencediagram.command.CommandAutoactivate;
 import net.sourceforge.plantuml.sequencediagram.command.CommandAutonumber;
 import net.sourceforge.plantuml.sequencediagram.command.CommandAutonumberIncrement;
+import net.sourceforge.plantuml.sequencediagram.command.CommandAutonumberNoDecimals;
 import net.sourceforge.plantuml.sequencediagram.command.CommandAutonumberResume;
 import net.sourceforge.plantuml.sequencediagram.command.CommandAutonumberStop;
 import net.sourceforge.plantuml.sequencediagram.command.CommandBoxEnd;
@@ -141,6 +142,7 @@ public class SequenceDiagramFactory extends PSystemCommandFactory {
 		cmds.add(new CommandAutonumberStop());
 		cmds.add(new CommandAutonumberResume());
 		cmds.add(new CommandAutonumberIncrement());
+		cmds.add(new CommandAutonumberNoDecimals());
 		cmds.add(new CommandAutoactivate());
 		cmds.add(new CommandFootbox());
 		cmds.add(new CommandDelay());
@@ -148,7 +150,7 @@ public class SequenceDiagramFactory extends PSystemCommandFactory {
 		cmds.add(new CommandUrl());
 		cmds.add(new CommandLinkAnchor());
 	}
-	
+
 	@Override
 	public UmlDiagramType getUmlDiagramType() {
 		return UmlDiagramType.SEQUENCE;
