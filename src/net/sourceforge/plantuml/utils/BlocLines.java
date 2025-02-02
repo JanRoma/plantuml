@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.plantuml.command.MultilinesStrategy;
+import net.sourceforge.plantuml.jaws.Jaws;
 import net.sourceforge.plantuml.jaws.JawsStrange;
 import net.sourceforge.plantuml.klimt.color.NoSuchColorException;
 import net.sourceforge.plantuml.klimt.creole.Display;
@@ -68,10 +69,14 @@ public class BlocLines implements Iterable<StringLocated> {
 		return sb.toString();
 	}
 
-	public BlocLines expandsJaws5() {
+	@JawsStrange
+	public BlocLines expandsNewline(boolean reallyExpands) {
+		if (reallyExpands == false)
+			return this;
+
 		final List<StringLocated> copy = new ArrayList<>();
 		for (StringLocated sl : lines)
-			copy.addAll(sl.expandsJaws5());
+			copy.addAll(sl.expandsNewline());
 
 		return new BlocLines(copy);
 	}
@@ -110,6 +115,8 @@ public class BlocLines implements Iterable<StringLocated> {
 	}
 
 	public Display toDisplay() throws NoSuchColorException {
+		if (Jaws.TRACE)
+			System.err.println("BlocLines::toDisplay " + lines);
 		return Display.createFoo(lines);
 	}
 

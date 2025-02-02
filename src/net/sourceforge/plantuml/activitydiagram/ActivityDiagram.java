@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import net.atmp.CucaDiagram;
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.abel.Entity;
 import net.sourceforge.plantuml.abel.GroupType;
 import net.sourceforge.plantuml.abel.LeafType;
@@ -48,6 +49,8 @@ import net.sourceforge.plantuml.core.DiagramDescription;
 import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.klimt.creole.Display;
 import net.sourceforge.plantuml.plasma.Quark;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.preproc.OptionKey;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 import net.sourceforge.plantuml.utils.Direction;
 
@@ -57,8 +60,8 @@ public class ActivityDiagram extends CucaDiagram {
 	private Entity lastEntityBrancheConsulted;
 	private ConditionalContext currentContext;
 
-	public ActivityDiagram(UmlSource source, Map<String, String> skinMap) {
-		super(source, UmlDiagramType.ACTIVITY, skinMap);
+	public ActivityDiagram(UmlSource source, Previous previous, PreprocessingArtifact preprocessing) {
+		super(source, UmlDiagramType.ACTIVITY, previous, preprocessing);
 		setNamespaceSeparator(null);
 	}
 

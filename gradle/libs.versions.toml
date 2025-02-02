@@ -5,14 +5,14 @@
 
 [versions]
 ant                 = "1.10.15"
-assertj             = "3.26.3"
+assertj             = "3.27.3"
 batik               = "1.18"
 elk                 = "0.9.1"
 fop                 = "2.10"
 glytching-junit-ext = "2.6.0"
-graalvm-native      = "0.10.3"
+graalvm-native      = "0.10.4"
 jlatexmath          = "1.0.7"
-junit-jupiter       = "5.11.3"
+junit-jupiter       = "5.11.4"
 mockito-j8          = "4.+"
 mockito             = "5.+"
 adarshr-test-logger = "4.0.0"

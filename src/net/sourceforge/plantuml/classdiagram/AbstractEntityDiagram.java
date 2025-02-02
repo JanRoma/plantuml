@@ -42,26 +42,30 @@ import java.util.List;
 import java.util.Map;
 
 import net.atmp.CucaDiagram;
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.abel.Entity;
 import net.sourceforge.plantuml.core.DiagramDescription;
 import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.klimt.creole.Display;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.preproc.OptionKey;
+import net.sourceforge.plantuml.skin.PragmaKey;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 
 public abstract class AbstractEntityDiagram extends CucaDiagram {
 	// ::remove folder when __HAXE__
 
-	public AbstractEntityDiagram(UmlSource source, UmlDiagramType type, Map<String, String> orig) {
-		super(source, type, orig);
+	public AbstractEntityDiagram(UmlSource source, UmlDiagramType type, Previous previous, PreprocessingArtifact preprocessing) {
+		super(source, type, previous, preprocessing);
 	}
 
 	final protected List<String> getDotStrings() {
 		final List<String> def = Arrays.asList("nodesep=.35;", "ranksep=0.8;", "edge [fontsize=11,labelfontsize=11];",
 				"node [fontsize=11,height=.35,width=.55];");
-		if (getPragma().isDefine("graphattributes") == false) 
+		if (getPragma().isDefine(PragmaKey.GRAPH_ATTRIBUTES) == false) 
 			return def;
 		
-		final String attribute = getPragma().getValue("graphattributes");
+		final String attribute = getPragma().getValue(PragmaKey.GRAPH_ATTRIBUTES);
 		final List<String> result = new ArrayList<>(def);
 		result.add(attribute);
 		return Collections.unmodifiableList(result);

@@ -34,6 +34,7 @@
  */
 package net.sourceforge.plantuml.tim;
 
+import net.sourceforge.plantuml.jaws.JawsStrange;
 import net.sourceforge.plantuml.json.JsonArray;
 import net.sourceforge.plantuml.json.JsonObject;
 import net.sourceforge.plantuml.json.JsonValue;
@@ -138,11 +139,13 @@ public class VariableManager {
 		return i;
 	}
 
+	@JawsStrange
 	public String getVarnameAt(String s, int pos) {
-		if (pos > 0 && TLineType.isLetterOrUnderscoreOrDigit(s.charAt(pos - 1))
-				&& justAfterBackslashN(s, pos) == false) {
+		final boolean justAfterALetter = pos > 0 && TLineType.isLetterOrUnderscoreOrDigit(s.charAt(pos - 1))
+				&& justAfterBackslashN(s, pos) == false;
+		if (justAfterALetter && s.charAt(pos) != '$')
 			return null;
-		}
+
 		final String varname = memory.variablesNames3().getLonguestMatchStartingIn(s, pos);
 		if (varname.length() == 0)
 			return null;
@@ -154,6 +157,7 @@ public class VariableManager {
 		return null;
 	}
 
+	@JawsStrange
 	public static boolean justAfterBackslashN(String s, int pos) {
 		return pos > 1 && s.charAt(pos - 2) == '\\' && s.charAt(pos - 1) == 'n';
 	}

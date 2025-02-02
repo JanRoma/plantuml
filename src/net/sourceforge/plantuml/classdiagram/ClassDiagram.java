@@ -37,9 +37,9 @@ package net.sourceforge.plantuml.classdiagram;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Map;
 
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.abel.Entity;
 import net.sourceforge.plantuml.abel.Link;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
@@ -48,13 +48,15 @@ import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.klimt.shape.TextBlock;
 import net.sourceforge.plantuml.objectdiagram.AbstractClassOrObjectDiagram;
 import net.sourceforge.plantuml.plasma.Quark;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.skin.PragmaKey;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 import net.sourceforge.plantuml.svek.image.EntityImageClass;
 
 public class ClassDiagram extends AbstractClassOrObjectDiagram {
 
-	public ClassDiagram(UmlSource source, Map<String, String> skinMap) {
-		super(source, UmlDiagramType.CLASS, skinMap);
+	public ClassDiagram(UmlSource source, Previous previous, PreprocessingArtifact preprocessingArtifact) {
+		super(source, UmlDiagramType.CLASS, previous, preprocessingArtifact);
 	}
 
 	private boolean allowMixing;
@@ -119,7 +121,7 @@ public class ClassDiagram extends AbstractClassOrObjectDiagram {
 
 		}
 
-		if (getPragma().useIntermediatePackages() == false)
+		if (getPragma().isFalse(PragmaKey.USE_INTERMEDIATE_PACKAGES))
 			packSomePackage();
 
 		this.applySingleStrategy();

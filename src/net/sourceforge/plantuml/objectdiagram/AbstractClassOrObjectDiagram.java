@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.abel.DisplayPositioned;
 import net.sourceforge.plantuml.abel.Entity;
 import net.sourceforge.plantuml.abel.LeafType;
@@ -52,13 +53,14 @@ import net.sourceforge.plantuml.decoration.LinkDecor;
 import net.sourceforge.plantuml.decoration.LinkType;
 import net.sourceforge.plantuml.klimt.creole.Display;
 import net.sourceforge.plantuml.plasma.Quark;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 
 public abstract class AbstractClassOrObjectDiagram extends AbstractEntityDiagram {
 	// ::remove folder when __HAXE__
 
-	public AbstractClassOrObjectDiagram(UmlSource source, UmlDiagramType type, Map<String, String> orig) {
-		super(source, type, orig);
+	public AbstractClassOrObjectDiagram(UmlSource source, UmlDiagramType type, Previous previous, PreprocessingArtifact preprocessingArtifact) {
+		super(source, type, previous, preprocessingArtifact);
 		setNamespaceSeparator(".");
 	}
 

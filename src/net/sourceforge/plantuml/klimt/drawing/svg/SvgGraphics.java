@@ -418,7 +418,8 @@ public class SvgGraphics {
 	// https://forum.plantuml.net/12469/package-background-transparent-package-default-background?show=12479#c12479
 	// https://github.com/plantuml/plantuml-server/issues/348#issuecomment-2581253011
 	private String fixColor(String color) {
-		// Since "transparent" isn’t being recognized (even though it should be), we use #FFFFFF00 as an alternative
+		// Since "transparent" isn’t being recognized (even though it should be), we use
+		// #FFFFFF00 as an alternative
 		return color == null || "#00000000".equals(color) ? "#FFFFFF00" : color;
 	}
 
@@ -1116,14 +1117,23 @@ public class SvgGraphics {
 
 		for (Map.Entry<UGroupType, String> typeIdent : typeIdents.entrySet()) {
 			if (typeIdent.getKey() == UGroupType.ID)
-				pendingAction.get(0).setAttribute("id", typeIdent.getValue());
-			if (option.isInteractive() && typeIdent.getKey() == UGroupType.CLASS)
-				pendingAction.get(0).setAttribute("class", typeIdent.getValue());
+				pendingAction.get(0).setAttribute(UGroupType.ID.getSvgKeyAttributeName(), typeIdent.getValue());
+			
 			if (typeIdent.getKey() == UGroupType.TITLE) {
-				Element title = document.createElement("title");
+				Element title = document.createElement(UGroupType.TITLE.getSvgKeyAttributeName());
 				title.setTextContent(typeIdent.getValue());
 				pendingAction.get(0).appendChild(title);
 			}
+			
+			if (option.isInteractive())
+				switch (typeIdent.getKey()) {
+				case CLASS:
+				case DATA_PARTICIPANT:
+				case DATA_PARTICIPANT_1:
+				case DATA_PARTICIPANT_2:
+					pendingAction.get(0).setAttribute(typeIdent.getKey().getSvgKeyAttributeName(),
+							typeIdent.getValue());
+				}
 		}
 	}
 

@@ -39,6 +39,7 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.abel.Entity;
 import net.sourceforge.plantuml.abel.GroupType;
 import net.sourceforge.plantuml.abel.LeafType;
@@ -48,6 +49,7 @@ import net.sourceforge.plantuml.command.ParserPass;
 import net.sourceforge.plantuml.core.UmlSource;
 import net.sourceforge.plantuml.klimt.creole.Display;
 import net.sourceforge.plantuml.plasma.Quark;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 
 public class StateDiagram extends AbstractEntityDiagram {
@@ -55,8 +57,8 @@ public class StateDiagram extends AbstractEntityDiagram {
 
 	private static final String CONCURRENT_PREFIX = "CONC";
 
-	public StateDiagram(UmlSource source, Map<String, String> skinMap) {
-		super(source, UmlDiagramType.STATE, skinMap);
+	public StateDiagram(UmlSource source, Previous previous, PreprocessingArtifact preprocessingArtifact) {
+		super(source, UmlDiagramType.STATE, previous, preprocessingArtifact);
 		setNamespaceSeparator(".");
 	}
 

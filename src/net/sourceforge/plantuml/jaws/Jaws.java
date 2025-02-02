@@ -42,10 +42,13 @@ import java.util.List;
 import net.sourceforge.plantuml.text.StringLocated;
 
 public class Jaws {
+	
+	public static final boolean TRACE = false;
 
 	public static final char BLOCK_E1_NEWLINE = '\uE100';
 	public static final char BLOCK_E1_NEWLINE_LEFT_ALIGN = '\uE101';
 	public static final char BLOCK_E1_NEWLINE_RIGHT_ALIGN = '\uE102';
+	public static final char BLOCK_E1_BREAKLINE = '\uE103';
 
 	public static final char BLOCK_E1_REAL_BACKSLASH = '\uE110';
 	public static final char BLOCK_E1_REAL_TABULATION = '\uE111';
@@ -77,6 +80,14 @@ public class Jaws {
 			output.add(line);
 		}
 		return Collections.unmodifiableList(output);
+	}
+
+	public static List<StringLocated> expands0(List<StringLocated> input) {
+		final List<StringLocated> output = new ArrayList<StringLocated>();
+		for (StringLocated sl : input) 
+			output.addAll(sl.expandsBreaklineButEmbedded());
+		
+		return output;
 	}
 
 }

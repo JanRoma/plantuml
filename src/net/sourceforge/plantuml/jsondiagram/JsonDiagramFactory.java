@@ -38,8 +38,8 @@ package net.sourceforge.plantuml.jsondiagram;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.abel.DisplayPositioned;
 import net.sourceforge.plantuml.command.PSystemAbstractFactory;
 import net.sourceforge.plantuml.core.Diagram;
@@ -52,6 +52,7 @@ import net.sourceforge.plantuml.klimt.creole.Display;
 import net.sourceforge.plantuml.klimt.geom.HorizontalAlignment;
 import net.sourceforge.plantuml.klimt.geom.VerticalAlignment;
 import net.sourceforge.plantuml.log.Logme;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 import net.sourceforge.plantuml.style.parser.StyleParsingException;
 import net.sourceforge.plantuml.text.BackSlash;
@@ -64,7 +65,7 @@ public class JsonDiagramFactory extends PSystemAbstractFactory {
 	}
 
 	@Override
-	public Diagram createSystem(UmlSource source, Map<String, String> skinMap) {
+	public Diagram createSystem(UmlSource source, Previous previous, PreprocessingArtifact preprocessing) {
 		final List<Highlighted> highlighted = new ArrayList<>();
 		StyleExtractor styleExtractor = null;
 		JsonValue json;
@@ -92,7 +93,7 @@ public class JsonDiagramFactory extends PSystemAbstractFactory {
 		} catch (ParseException e) {
 			json = null;
 		}
-		final JsonDiagram result = new JsonDiagram(source, UmlDiagramType.JSON, json, highlighted, styleExtractor);
+		final JsonDiagram result = new JsonDiagram(source, UmlDiagramType.JSON, json, highlighted, styleExtractor, preprocessing);
 		if (styleExtractor != null) {
 			try {
 				styleExtractor.applyStyles(result.getSkinParam());

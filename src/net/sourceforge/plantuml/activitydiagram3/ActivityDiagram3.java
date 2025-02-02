@@ -37,10 +37,10 @@ package net.sourceforge.plantuml.activitydiagram3;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Map;
 import java.util.Objects;
 
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.activitydiagram3.ftile.BoxStyle;
 import net.sourceforge.plantuml.activitydiagram3.ftile.Swimlanes;
@@ -58,6 +58,7 @@ import net.sourceforge.plantuml.klimt.creole.Display;
 import net.sourceforge.plantuml.klimt.font.StringBounder;
 import net.sourceforge.plantuml.klimt.shape.TextBlock;
 import net.sourceforge.plantuml.klimt.shape.TextBlockRecentred;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
 import net.sourceforge.plantuml.sequencediagram.NotePosition;
 import net.sourceforge.plantuml.sequencediagram.NoteType;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
@@ -75,8 +76,8 @@ public class ActivityDiagram3 extends UmlDiagram {
 
 	private final Swimlanes swimlanes = new Swimlanes(getSkinParam(), getPragma());
 
-	public ActivityDiagram3(UmlSource source, Map<String, String> skinMap) {
-		super(source, UmlDiagramType.ACTIVITY, skinMap);
+	public ActivityDiagram3(UmlSource source, Previous previous, PreprocessingArtifact preprocessing) {
+		super(source, UmlDiagramType.ACTIVITY, previous, preprocessing);
 	}
 
 	private void manageSwimlaneStrategy() {

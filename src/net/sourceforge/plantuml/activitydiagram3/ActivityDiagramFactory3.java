@@ -38,6 +38,7 @@ package net.sourceforge.plantuml.activitydiagram3;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandActivity3;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandActivityLegacy1;
 import net.sourceforge.plantuml.activitydiagram3.command.CommandActivityLong3;
@@ -89,6 +90,8 @@ import net.sourceforge.plantuml.command.CommandFootboxIgnored;
 import net.sourceforge.plantuml.command.CommonCommands;
 import net.sourceforge.plantuml.command.PSystemCommandFactory;
 import net.sourceforge.plantuml.core.UmlSource;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.preproc.OptionKey;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 
 public class ActivityDiagramFactory3 extends PSystemCommandFactory {
@@ -159,8 +162,8 @@ public class ActivityDiagramFactory3 extends PSystemCommandFactory {
 	}
 
 	@Override
-	public ActivityDiagram3 createEmptyDiagram(UmlSource source, Map<String, String> skinMap) {
-		return new ActivityDiagram3(source, skinMap);
+	public ActivityDiagram3 createEmptyDiagram(UmlSource source, Previous previous, PreprocessingArtifact preprocessing) {
+		return new ActivityDiagram3(source, previous, preprocessing);
 	}
 
 	@Override

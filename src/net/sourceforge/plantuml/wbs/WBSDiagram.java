@@ -60,6 +60,8 @@ import net.sourceforge.plantuml.klimt.geom.XDimension2D;
 import net.sourceforge.plantuml.klimt.shape.AbstractTextBlock;
 import net.sourceforge.plantuml.klimt.shape.TextBlock;
 import net.sourceforge.plantuml.mindmap.IdeaShape;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.preproc.OptionKey;
 import net.sourceforge.plantuml.regex.Matcher2;
 import net.sourceforge.plantuml.regex.MyPattern;
 import net.sourceforge.plantuml.regex.Pattern2;
@@ -84,8 +86,8 @@ public class WBSDiagram extends UmlDiagram {
 		return new DiagramDescription("Work Breakdown Structure");
 	}
 
-	public WBSDiagram(UmlSource source) {
-		super(source, UmlDiagramType.WBS, null);
+	public WBSDiagram(UmlSource source, PreprocessingArtifact preprocessing) {
+		super(source, UmlDiagramType.WBS, null, preprocessing);
 	}
 
 	@Override

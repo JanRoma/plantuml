@@ -30,6 +30,7 @@
  *
  *
  * Original Author:  Arnaud Roques
+ * Modified by    :  Shunli Han
  * 
  *
  */
@@ -63,7 +64,6 @@ import net.sourceforge.plantuml.ebnf.Symbol;
 import net.sourceforge.plantuml.jsondiagram.StyleExtractor;
 import net.sourceforge.plantuml.klimt.color.HColor;
 import net.sourceforge.plantuml.klimt.color.HColorSet;
-import net.sourceforge.plantuml.klimt.color.HColors;
 import net.sourceforge.plantuml.klimt.drawing.UGraphic;
 import net.sourceforge.plantuml.klimt.font.FontConfiguration;
 import net.sourceforge.plantuml.klimt.font.StringBounder;
@@ -71,6 +71,8 @@ import net.sourceforge.plantuml.klimt.geom.XDimension2D;
 import net.sourceforge.plantuml.klimt.shape.AbstractTextBlock;
 import net.sourceforge.plantuml.klimt.shape.TextBlock;
 import net.sourceforge.plantuml.klimt.shape.TextBlockUtils;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.preproc.OptionKey;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 import net.sourceforge.plantuml.style.ISkinParam;
 import net.sourceforge.plantuml.style.PName;
@@ -81,8 +83,8 @@ import net.sourceforge.plantuml.utils.CharInspector;
 
 public class PSystemRegex extends TitledDiagram {
 
-	public PSystemRegex(UmlSource source) {
-		super(source, UmlDiagramType.REGEX, null);
+	public PSystemRegex(UmlSource source, PreprocessingArtifact preprocessing) {
+		super(source, UmlDiagramType.REGEX, null, preprocessing);
 		final StyleExtractor styleExtractor = new StyleExtractor(source.iterator2());
 
 		final ISkinParam skinParam = getSkinParam();
@@ -113,6 +115,16 @@ public class PSystemRegex extends TitledDiagram {
 			throws IOException {
 		return createImageBuilder(fileFormatOption).drawable(getTextMainBlock(fileFormatOption)).write(os);
 	}
+
+//	public CommandExecutionResult changeLanguage(String lang) {
+//		setParam("language", lang);
+//		return CommandExecutionResult.ok();
+//	}
+//
+//	public CommandExecutionResult useDescriptiveNames(String useDescriptive) {
+//		setParam("descriptive", useDescriptive);
+//		return CommandExecutionResult.ok();
+//	}
 
 	@Override
 	protected TextBlock getTextMainBlock(FileFormatOption fileFormatOption) {
@@ -168,7 +180,7 @@ public class PSystemRegex extends TitledDiagram {
 				else if (token.getType() == ReTokenType.ALTERNATIVE)
 					alternation();
 				else if (token.getType() == ReTokenType.QUANTIFIER && token.getData().startsWith("*"))
-					repetitionZeroOrMore(false);
+					repetitionZeroOrMore();
 				else if (token.getType() == ReTokenType.QUANTIFIER && token.getData().startsWith("+"))
 					repetitionOneOrMore();
 				else if (token.getType() == ReTokenType.QUANTIFIER && token.getData().startsWith("?"))
@@ -196,7 +208,8 @@ public class PSystemRegex extends TitledDiagram {
 	}
 
 	private void pushEtileBox(ReToken element, Symbol type) {
-		stack.addFirst(new ETileBox(element.getData(), type, fontConfiguration, style, colorSet, getSkinParam()));
+		stack.addFirst(new ETileBox(element.getData(), type, fontConfiguration, style, colorSet, getSkinParam(),
+				getPreprocessingArtifact().getOption()));
 	}
 
 	private void pushRegexGroup(ReToken element) {
@@ -217,12 +230,9 @@ public class PSystemRegex extends TitledDiagram {
 		stack.addFirst(new ETileNamedGroup(arg1, fontConfiguration, colorSet, getSkinParam(), name));
 	}
 
-	private void repetitionZeroOrMore(boolean isCompact) {
+	private void repetitionZeroOrMore() {
 		final ETile arg1 = stack.removeFirst();
-		if (isCompact)
-			stack.addFirst(new ETileZeroOrMore(arg1));
-		else
-			stack.addFirst(new ETileOptional(new ETileOneOrMore(arg1), getSkinParam()));
+		stack.addFirst(new ETileZeroOrMore(arg1, getSkinParam()));
 	}
 
 	private void optional() {

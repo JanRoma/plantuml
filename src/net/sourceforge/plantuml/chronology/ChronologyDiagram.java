@@ -37,7 +37,6 @@ package net.sourceforge.plantuml.chronology;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -58,6 +57,8 @@ import net.sourceforge.plantuml.klimt.geom.HorizontalAlignment;
 import net.sourceforge.plantuml.klimt.geom.XDimension2D;
 import net.sourceforge.plantuml.klimt.shape.AbstractTextBlock;
 import net.sourceforge.plantuml.klimt.shape.TextBlock;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.preproc.OptionKey;
 import net.sourceforge.plantuml.project.GanttStyle;
 import net.sourceforge.plantuml.project.LabelPosition;
 import net.sourceforge.plantuml.project.LabelStrategy;
@@ -134,8 +135,8 @@ public class ChronologyDiagram extends TitledDiagram implements ToTaskDraw, With
 //		this.weekNumberStrategy = new WeekNumberStrategy(firstDayOfWeek, minimalDaysInFirstWeek);
 //	}
 
-	public ChronologyDiagram(UmlSource source) {
-		super(source, UmlDiagramType.CHRONOLOGY, null);
+	public ChronologyDiagram(UmlSource source, PreprocessingArtifact preprocessing) {
+		super(source, UmlDiagramType.CHRONOLOGY, null, preprocessing);
 	}
 
 //	public final int getDpi(FileFormatOption fileFormatOption) {

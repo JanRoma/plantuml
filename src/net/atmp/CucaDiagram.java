@@ -49,6 +49,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import net.sourceforge.plantuml.FileFormat;
 import net.sourceforge.plantuml.FileFormatOption;
+import net.sourceforge.plantuml.Previous;
 import net.sourceforge.plantuml.StringUtils;
 import net.sourceforge.plantuml.UmlDiagram;
 import net.sourceforge.plantuml.abel.Bag;
@@ -84,9 +85,12 @@ import net.sourceforge.plantuml.klimt.drawing.UGraphic;
 import net.sourceforge.plantuml.klimt.shape.TextBlock;
 import net.sourceforge.plantuml.plasma.Plasma;
 import net.sourceforge.plantuml.plasma.Quark;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.preproc.OptionKey;
 import net.sourceforge.plantuml.project.Failable;
 import net.sourceforge.plantuml.sdot.CucaDiagramFileMakerSmetana;
 import net.sourceforge.plantuml.security.SecurityUtils;
+import net.sourceforge.plantuml.skin.PragmaKey;
 import net.sourceforge.plantuml.skin.UmlDiagramType;
 import net.sourceforge.plantuml.skin.VisibilityModifier;
 import net.sourceforge.plantuml.statediagram.StateDiagram;
@@ -141,8 +145,9 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 		this.setSeparator(namespaceSeparator);
 	}
 
-	public CucaDiagram(UmlSource source, UmlDiagramType type, Map<String, String> orig) {
-		super(source, type, orig);
+	public CucaDiagram(UmlSource source, UmlDiagramType type, Previous previous,
+			PreprocessingArtifact preprocessing) {
+		super(source, type, previous, preprocessing);
 		this.namespace = new Plasma<Entity>();
 		this.root = namespace.root();
 		new Entity(this.root, this, null, GroupType.ROOT, 0);
@@ -280,9 +285,6 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	}
 
 	private boolean badName(String separator, String full) {
-		if (full.startsWith(separator))
-			return true;
-
 		if (full.endsWith(separator))
 			return true;
 
@@ -396,12 +398,12 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 			if (s.startsWith("nodesep") || s.startsWith("ranksep") || s.startsWith("layout"))
 				result.add(s);
 
-		String aspect = getPragma().getValue("aspect");
+		String aspect = getPragma().getValue(PragmaKey.ASPECT);
 		if (aspect != null) {
 			aspect = aspect.replace(',', '.');
 			result.add("aspect=" + aspect + ";");
 		}
-		final String ratio = getPragma().getValue("ratio");
+		final String ratio = getPragma().getValue(PragmaKey.RATIO);
 		if (ratio != null)
 			result.add("ratio=" + ratio + ";");
 
@@ -514,19 +516,19 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	}
 
 	public void resetPragmaLabel() {
-		getPragma().undefine("labeldistance");
-		getPragma().undefine("labelangle");
+		getPragma().undefine(PragmaKey.LABEL_DISTANCE);
+		getPragma().undefine(PragmaKey.LABEL_ANGLE);
 	}
 
 	public String getLabeldistance() {
-		if (getPragma().isDefine("labeldistance")) {
-			final String s = getPragma().getValue("labeldistance");
+		if (getPragma().isDefine(PragmaKey.LABEL_DISTANCE)) {
+			final String s = getPragma().getValue(PragmaKey.LABEL_DISTANCE);
 			if (isNumber(s))
 				return s;
 
 		}
-		if (getPragma().isDefine("defaultlabeldistance")) {
-			final String s = getPragma().getValue("defaultlabeldistance");
+		if (getPragma().isDefine(PragmaKey.DEFAULT_LABEL_DISTANCE)) {
+			final String s = getPragma().getValue(PragmaKey.DEFAULT_LABEL_DISTANCE);
 			if (isNumber(s))
 				return s;
 
@@ -536,14 +538,14 @@ public abstract class CucaDiagram extends UmlDiagram implements GroupHierarchy, 
 	}
 
 	public String getLabelangle() {
-		if (getPragma().isDefine("labelangle")) {
-			final String s = getPragma().getValue("labelangle");
+		if (getPragma().isDefine(PragmaKey.LABEL_ANGLE)) {
+			final String s = getPragma().getValue(PragmaKey.LABEL_ANGLE);
 			if (isNumber(s))
 				return s;
 
 		}
-		if (getPragma().isDefine("defaultlabelangle")) {
-			final String s = getPragma().getValue("defaultlabelangle");
+		if (getPragma().isDefine(PragmaKey.DEFAULT_LABEL_ANGLE)) {
+			final String s = getPragma().getValue(PragmaKey.DEFAULT_LABEL_ANGLE);
 			if (isNumber(s))
 				return s;
 

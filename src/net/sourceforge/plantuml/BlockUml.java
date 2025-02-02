@@ -36,7 +36,6 @@
 package net.sourceforge.plantuml;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static net.sourceforge.plantuml.utils.CharsetUtils.charsetOrDefault;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -46,7 +45,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.plantuml.code.AsciiEncoder;
@@ -58,6 +56,7 @@ import net.sourceforge.plantuml.jaws.Jaws;
 import net.sourceforge.plantuml.log.Logme;
 import net.sourceforge.plantuml.preproc.Defines;
 import net.sourceforge.plantuml.preproc.FileWithSuffix;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
 import net.sourceforge.plantuml.preproc.ReadLineWithYamlHeader;
 import net.sourceforge.plantuml.regex.Matcher2;
 import net.sourceforge.plantuml.text.BackSlash;
@@ -75,8 +74,9 @@ public class BlockUml {
 	private List<StringLocated> debug;
 	private Diagram system;
 	private final Defines localDefines;
-	private final Map<String, String> skinMap;
+	private final Previous previous;
 	private final Set<FileWithSuffix> included = new HashSet<>();
+	private final PreprocessingArtifact preprocessingArtifact;
 
 	public Set<FileWithSuffix> getIncluded() {
 		return Collections.unmodifiableSet(included);
@@ -122,31 +122,36 @@ public class BlockUml {
 
 	private boolean preprocessorError;
 
-	/**
-	 * @deprecated being kept for backwards compatibility, perhaps other projects
-	 *             are using this?
-	 */
-	@Deprecated
-	public BlockUml(List<StringLocated> strings, Defines defines, Map<String, String> skinMap,
-			DefinitionsContainer definitions) {
-		this(strings, defines, skinMap, definitions, charsetOrDefault(definitions.getCharset()));
-	}
+//	/**
+//	 * @deprecated being kept for backwards compatibility, perhaps other projects
+//	 *             are using this?
+//	 */
+//	@Deprecated
+//	public BlockUml(List<StringLocated> strings, Defines defines, Map<String, String> skinMap,
+//			DefinitionsContainer definitions) {
+//		this(strings, defines, skinMap, definitions, charsetOrDefault(definitions.getCharset()));
+//	}
 
-	public BlockUml(List<StringLocated> strings, Defines defines, Map<String, String> skinMap,
+	public BlockUml(List<StringLocated> strings, Defines defines, Previous previous,
 			DefinitionsContainer definitions, Charset charset) {
 		this.rawSource = ReadLineWithYamlHeader.removeYamlHeader(strings);
 		this.localDefines = defines;
-		this.skinMap = skinMap;
+		this.previous = previous;
 
 		if (definitions == null) {
 			this.data = new ArrayList<>(this.rawSource);
+			this.preprocessingArtifact = new PreprocessingArtifact();
 		} else {
 			final TimLoader timLoader = new TimLoader(definitions.getImportedFiles(), defines, charset, definitions,
 					this.rawSource.get(0));
 			this.included.addAll(timLoader.load(this.rawSource));
-			this.data = Jaws.expandsJawsForPreprocessor(timLoader.getResultList());
+			List<StringLocated> tmp = timLoader.getResultList();
+			tmp = Jaws.expands0(tmp);
+			tmp = Jaws.expandsJawsForPreprocessor(tmp);
+			this.data = tmp;
 			this.debug = timLoader.getDebug();
 			this.preprocessorError = timLoader.isPreprocessorError();
+			this.preprocessingArtifact = timLoader.getPreprocessingArtifact();
 		}
 	}
 
@@ -182,9 +187,9 @@ public class BlockUml {
 	public Diagram getDiagram() {
 		if (system == null) {
 			if (preprocessorError)
-				system = new PSystemErrorPreprocessor(data, debug);
+				system = new PSystemErrorPreprocessor(data, debug, preprocessingArtifact);
 			else
-				system = new PSystemBuilder().createPSystem(data, rawSource, skinMap);
+				system = new PSystemBuilder().createPSystem(data, rawSource, previous, preprocessingArtifact);
 		}
 		return system;
 	}

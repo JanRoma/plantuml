@@ -5,12 +5,12 @@
  * (C) Copyright 2009-2024, Arnaud Roques
  *
  * Project Info:  https://plantuml.com
- * 
+ *
  * If you like this project or if you find it useful, you can support us at:
- * 
+ *
  * https://plantuml.com/patreon (only 1$ per month!)
  * https://plantuml.com/paypal
- * 
+ *
  * This file is part of PlantUML.
  *
  * PlantUML is free software; you can redistribute it and/or modify it
@@ -31,16 +31,34 @@
  *
  * Original Author:  Arnaud Roques
  *
- *
  */
-package net.sourceforge.plantuml.jaws;
+package net.sourceforge.plantuml.tim;
 
-public enum JawsWarning {
-	BACKSLASH_NEWLINE,
-	BACKSLASH_LEFT,
-	BACKSLASH_RIGHT,
-	BACKSLASH_TABULATION,
-	BACKSLASH_BACKSLASH,
-	OTHER
+import net.sourceforge.plantuml.preproc.OptionKey;
+import net.sourceforge.plantuml.text.StringLocated;
+import net.sourceforge.plantuml.tim.expression.TValue;
+import net.sourceforge.plantuml.warning.Warning;
+
+public class EaterOption extends Eater {
+
+	public EaterOption(StringLocated s) {
+		super(s);
+	}
+
+	@Override
+	public void analyze(TContext context, TMemory memory) throws EaterException {
+		skipSpaces();
+		checkAndEatChar("!option");
+		skipSpaces();
+		final String key = eatAndGetVarname();
+		skipSpaces();
+		final TValue value = eatExpression(context, memory);
+		skipSpaces();
+		final OptionKey optionKey = OptionKey.lazyFrom(key);
+		if (optionKey == null)
+			context.getPreprocessingArtifact().addWarning(new Warning("No such !option " + key));
+		else
+			context.getPreprocessingArtifact().getOption().define(optionKey, value.toString());
+	}
 
 }

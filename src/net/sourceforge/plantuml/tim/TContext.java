@@ -52,6 +52,7 @@ import net.sourceforge.plantuml.DefinitionsContainer;
 import net.sourceforge.plantuml.FileSystem;
 import net.sourceforge.plantuml.command.CommandExecutionResult;
 import net.sourceforge.plantuml.jaws.Jaws;
+import net.sourceforge.plantuml.jaws.JawsStrange;
 import net.sourceforge.plantuml.json.Json;
 import net.sourceforge.plantuml.json.JsonObject;
 import net.sourceforge.plantuml.json.JsonValue;
@@ -59,6 +60,7 @@ import net.sourceforge.plantuml.log.Logme;
 import net.sourceforge.plantuml.preproc.Defines;
 import net.sourceforge.plantuml.preproc.FileWithSuffix;
 import net.sourceforge.plantuml.preproc.ImportedFiles;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
 import net.sourceforge.plantuml.preproc.ReadLine;
 import net.sourceforge.plantuml.preproc.ReadLineList;
 import net.sourceforge.plantuml.preproc.ReadLineReader;
@@ -70,6 +72,7 @@ import net.sourceforge.plantuml.preproc2.PreprocessorIncludeStrategy;
 import net.sourceforge.plantuml.preproc2.PreprocessorUtils;
 import net.sourceforge.plantuml.security.SFile;
 import net.sourceforge.plantuml.security.SURL;
+import net.sourceforge.plantuml.skin.Pragma;
 import net.sourceforge.plantuml.text.StringLocated;
 import net.sourceforge.plantuml.text.TLineType;
 import net.sourceforge.plantuml.theme.Theme;
@@ -78,12 +81,14 @@ import net.sourceforge.plantuml.tim.builtin.AlwaysFalse;
 import net.sourceforge.plantuml.tim.builtin.AlwaysTrue;
 import net.sourceforge.plantuml.tim.builtin.Backslash;
 import net.sourceforge.plantuml.tim.builtin.BoolVal;
+import net.sourceforge.plantuml.tim.builtin.Breakline;
 import net.sourceforge.plantuml.tim.builtin.CallUserFunction;
 import net.sourceforge.plantuml.tim.builtin.Chr;
 import net.sourceforge.plantuml.tim.builtin.Darken;
 import net.sourceforge.plantuml.tim.builtin.DateFunction;
 import net.sourceforge.plantuml.tim.builtin.Dec2hex;
 import net.sourceforge.plantuml.tim.builtin.Dirpath;
+import net.sourceforge.plantuml.tim.builtin.Dollar;
 import net.sourceforge.plantuml.tim.builtin.Eval;
 import net.sourceforge.plantuml.tim.builtin.Feature;
 import net.sourceforge.plantuml.tim.builtin.FileExists;
@@ -127,6 +132,7 @@ import net.sourceforge.plantuml.tim.builtin.Newline;
 import net.sourceforge.plantuml.tim.builtin.NewlineShort;
 import net.sourceforge.plantuml.tim.builtin.Now;
 import net.sourceforge.plantuml.tim.builtin.Ord;
+import net.sourceforge.plantuml.tim.builtin.Percent;
 import net.sourceforge.plantuml.tim.builtin.RandomFunction;
 import net.sourceforge.plantuml.tim.builtin.RetrieveProcedure;
 import net.sourceforge.plantuml.tim.builtin.ReverseColor;
@@ -178,6 +184,8 @@ public class TContext {
 	// private final Set<FileWithSuffix> usedFiles = new HashSet<>();
 	private final Set<FileWithSuffix> filesUsedCurrent = new HashSet<>();
 
+	private final PreprocessingArtifact preprocessingArtifact = new PreprocessingArtifact();
+
 	public Set<FileWithSuffix> getFilesUsedCurrent() {
 		return Collections.unmodifiableSet(filesUsedCurrent);
 	}
@@ -187,12 +195,14 @@ public class TContext {
 		functionsSet.addFunction(new AlwaysTrue());
 		functionsSet.addFunction(new Backslash());
 		functionsSet.addFunction(new BoolVal());
+		functionsSet.addFunction(new Breakline());
 		functionsSet.addFunction(new CallUserFunction());
 		functionsSet.addFunction(new Chr());
 		functionsSet.addFunction(new Darken());
 		functionsSet.addFunction(new DateFunction());
 		functionsSet.addFunction(new Dec2hex());
 		functionsSet.addFunction(new Dirpath(defines));
+		functionsSet.addFunction(new Dollar());
 		functionsSet.addFunction(new Eval());
 		functionsSet.addFunction(new Feature());
 		functionsSet.addFunction(new Filedate(defines));
@@ -237,6 +247,7 @@ public class TContext {
 		functionsSet.addFunction(new NewlineShort());
 		functionsSet.addFunction(new Now());
 		functionsSet.addFunction(new Ord());
+		functionsSet.addFunction(new Percent());
 		functionsSet.addFunction(new RandomFunction());
 		functionsSet.addFunction(new RetrieveProcedure());
 		functionsSet.addFunction(new ReverseColor());
@@ -389,6 +400,9 @@ public class TContext {
 		} else if (type == TLineType.ASSERT) {
 			this.executeAssert(memory, s.getTrimmed());
 			return null;
+		} else if (type == TLineType.OPTION) {
+			this.executeOption(memory, s.getTrimmed());
+			return null;
 		} else if (type == TLineType.UNDEF) {
 			this.executeUndef(memory, s);
 			return null;
@@ -431,9 +445,15 @@ public class TContext {
 				pendingAdd = null;
 			}
 			for (StringLocated line : tmp)
-				resultList.add(line);
+				addToResultList(line);
 
 		}
+	}
+
+	private boolean addToResultList(StringLocated line) {
+		if (Jaws.TRACE)
+			System.err.println("adding " + line);
+		return resultList.add(line);
 	}
 
 	private void simulatePlain(TMemory memory, StringLocated s) throws EaterException {
@@ -454,11 +474,17 @@ public class TContext {
 		condition.analyze(this, memory);
 	}
 
+	private void executeOption(TMemory memory, StringLocated s) throws EaterException {
+		final EaterOption condition = new EaterOption(s);
+		condition.analyze(this, memory);
+	}
+
 	private void executeUndef(TMemory memory, StringLocated s) throws EaterException {
 		final EaterUndef undef = new EaterUndef(s);
 		undef.analyze(this, memory);
 	}
 
+	@JawsStrange
 	private StringLocated[] applyFunctionsAndVariablesInternal(TMemory memory, StringLocated located)
 			throws EaterException {
 		if (memory.isEmpty() && functionsSet.size() == 0)
@@ -468,16 +494,23 @@ public class TContext {
 		if (result == null)
 			return null;
 
-		final String[] splited = result.split("\n");
-		final StringLocated[] tab = new StringLocated[splited.length];
-		for (int i = 0; i < splited.length; i++)
-			tab[i] = new StringLocated(splited[i], located.getLocation());
+		if (Pragma.legacyReplaceBackslashNByNewline()) {
+			final String[] splited = result.split("\n");
+			final StringLocated[] tab = new StringLocated[splited.length];
+			for (int i = 0; i < splited.length; i++)
+				tab[i] = new StringLocated(splited[i], located.getLocation());
 
-		return tab;
+			return tab;
+		}
+		if (result.contains("\n"))
+			throw new IllegalStateException(result);
+		return new StringLocated[] { new StringLocated(result, located.getLocation()) };
+
 	}
 
 	private String pendingAdd = null;
 
+	@JawsStrange
 	public String applyFunctionsAndVariables(TMemory memory, final StringLocated str) throws EaterException {
 		// https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm
 		// https://stackoverflow.com/questions/1326682/java-replacing-multiple-different-substring-in-a-string-at-once-or-in-the-most
@@ -521,7 +554,17 @@ public class TContext {
 						|| function.getFunctionType() == TFunctionType.LEGACY_DEFINE;
 				final TValue functionReturn = function.executeReturnFunction(this, memory, str, call.getValues(),
 						call.getNamedArguments());
-				result.append(functionReturn.toString());
+				String tmp = functionReturn.toString();
+				// if (tmp.indexOf(Jaws.BLOCK_E1_NEWLINE) > 0)
+				// System.err.println("tmp=" + tmp + " (" + function.getFunctionType() + ")");
+				// if (function.getFunctionType() == TFunctionType.RETURN_FUNCTION &&
+				// tmp.length() > 1) {
+				// System.err.println("JE REPLACE");
+				// tmp = StringLocated.expandsJaws32(tmp);
+				// tmp = tmp.replace(Jaws.BLOCK_E1_NEWLINE, '\n');
+				// System.err.println("DONC tmp=" + tmp);
+				// }
+				result.append(tmp);
 				i += call.getCurrentPosition() - 1;
 			} else if (new VariableManager(this, memory, str).getVarnameAt(str.getString(), i) != null) {
 				i = new VariableManager(this, memory, str).replaceVariables(str.getString(), i, result);
@@ -827,9 +870,11 @@ public class TContext {
 		return false;
 	}
 
+	@JawsStrange
 	private String getFunctionNameAt(String s, int pos) {
-		if (pos > 0 && TLineType.isLetterOrUnderscoreOrDigit(s.charAt(pos - 1)) && s.charAt(pos) != '%'
-				&& VariableManager.justAfterBackslashN(s, pos) == false)
+		final boolean justAfterALetter = pos > 0 && TLineType.isLetterOrUnderscoreOrDigit(s.charAt(pos - 1))
+				&& VariableManager.justAfterBackslashN(s, pos) == false;
+		if (justAfterALetter && s.charAt(pos) != '%' && s.charAt(pos) != '$')
 			return null;
 
 		final String fname = functionsSet.getLonguestMatchStartingIn(s, pos);
@@ -885,6 +930,10 @@ public class TContext {
 			return Optional.empty();
 
 		return Optional.of(first.substring(idx + 1).trim());
+	}
+
+	public PreprocessingArtifact getPreprocessingArtifact() {
+		return preprocessingArtifact;
 	}
 
 }

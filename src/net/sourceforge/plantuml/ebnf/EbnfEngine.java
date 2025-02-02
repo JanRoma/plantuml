@@ -44,6 +44,9 @@ import net.sourceforge.plantuml.klimt.creole.Display;
 import net.sourceforge.plantuml.klimt.font.FontConfiguration;
 import net.sourceforge.plantuml.klimt.geom.HorizontalAlignment;
 import net.sourceforge.plantuml.klimt.shape.TextBlock;
+import net.sourceforge.plantuml.preproc.PreprocessingArtifact;
+import net.sourceforge.plantuml.preproc.ConfigurationStore;
+import net.sourceforge.plantuml.preproc.OptionKey;
 import net.sourceforge.plantuml.style.ISkinParam;
 import net.sourceforge.plantuml.style.ISkinSimple;
 import net.sourceforge.plantuml.style.PName;
@@ -56,10 +59,12 @@ public class EbnfEngine {
 	private final Style style;
 	private final HColorSet colorSet;
 	private final ISkinParam skinParam;
+	private final ConfigurationStore<OptionKey> option;
 	private final HColor lineColor;
 
-	public EbnfEngine(ISkinParam skinParam) {
+	public EbnfEngine(ISkinParam skinParam, ConfigurationStore<OptionKey> option) {
 		this.skinParam = skinParam;
+		this.option = option;
 		this.style = ETile.getStyleSignature().getMergedStyle(skinParam.getCurrentStyleBuilder());
 		this.fontConfiguration = style.getFontConfiguration(skinParam.getIHtmlColorSet());
 		this.colorSet = skinParam.getIHtmlColorSet();
@@ -68,8 +73,8 @@ public class EbnfEngine {
 	}
 
 	public void push(Token element) {
-		stack.addFirst(
-				new ETileBox(element.getData(), element.getSymbol(), fontConfiguration, style, colorSet, skinParam));
+		stack.addFirst(new ETileBox(element.getData(), element.getSymbol(), fontConfiguration, style, colorSet,
+				skinParam, option));
 	}
 
 	public void optional() {
@@ -82,12 +87,9 @@ public class EbnfEngine {
 		stack.addFirst(new ETileNot(arg1, fontConfiguration, style, colorSet, skinParam));
 	}
 
-	public void repetitionZeroOrMore(boolean isCompact) {
+	public void repetitionZeroOrMore() {
 		final ETile arg1 = stack.removeFirst();
-		if (isCompact)
-			stack.addFirst(new ETileZeroOrMore(arg1));
-		else
-			stack.addFirst(new ETileOptional(new ETileOneOrMore(arg1), skinParam));
+		stack.addFirst(new ETileZeroOrMore(arg1, skinParam));
 	}
 
 	public void repetitionOneOrMore() {
